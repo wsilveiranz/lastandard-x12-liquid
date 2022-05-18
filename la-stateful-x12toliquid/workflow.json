@@ -1,0 +1,67 @@
+{
+  "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "actions": {
+          "Response": {
+              "type": "Response",
+              "kind": "http",
+              "inputs": {
+                  "statusCode": 200,
+                  "headers": {
+                      "Content-Type": "text/plain"
+                  },
+                  "body": "@body('Transform_JSON_To_TEXT')"
+              },
+              "runAfter": {
+                  "Transform_JSON_To_TEXT": [
+                      "Succeeded"
+                  ]
+              }
+          },
+          "Response_2": {
+              "type": "Response",
+              "kind": "http",
+              "inputs": {
+                  "statusCode": 500,
+                  "body": "Error processing the request."
+              },
+              "runAfter": {
+                  "Transform_JSON_To_TEXT": [
+                      "TIMEDOUT",
+                      "SKIPPED"
+                  ]
+              }
+          },
+          "Transform_JSON_To_TEXT": {
+              "type": "Liquid",
+              "kind": "JsonToText",
+              "inputs": {
+                  "content": "@outputs('Remove_Namespace')",
+                  "map": {
+                      "name": "converttocsv.liquid"
+                  }
+              },
+              "runAfter": {
+                  "Remove_Namespace": [
+                      "Succeeded"
+                  ]
+              }
+          },
+          "Remove_Namespace": {
+              "type": "Compose",
+              "inputs": "@json(replace(string(triggerBody()),'ns0:',''))",
+              "runAfter": {}
+          }
+      },
+      "triggers": {
+          "manual": {
+              "type": "Request",
+              "kind": "Http",
+              "inputs": {}
+          }
+      },
+      "contentVersion": "1.0.0.0",
+      "outputs": {}
+  },
+  "kind": "Stateful"
+}

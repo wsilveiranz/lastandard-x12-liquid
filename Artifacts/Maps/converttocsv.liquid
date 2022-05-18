@@ -1,0 +1,16 @@
+{%- for x in content -%}
+{%- assign st = x.X12_00501_837_P.ST -%}
+{%- assign bht = x.X12_00501_837_P.BHT -%}
+ST
+{{st.ST01}} | {{st.ST02}} | {{st.ST03}}
+BHT
+{{bht.BHT01}} | {{bht.BHT02}} {{bht.BHT03}} | {{bht.BHT04}} | {{bht.BHT05}} | {{bht.BHT06 -}}
+    {%-for y in x.X12_00501_837_P.NM1Loop1 -%} 
+    {%- assign nm = y.NM1 -%}
+    {%- assign per = y.PER -%}
+NM1
+{{nm.NM101}} | {{nm.NM102}} | {{nm.NM103}} | {{nm.NM108}} | {{nm.NM109}}
+PER
+{{per.PER01}} | {{per.PER03}} | {{per.PER04 -}}
+    {%- endfor -%}
+{%- endfor -%}
