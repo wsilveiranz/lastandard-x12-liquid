@@ -4,7 +4,7 @@
 name: (classic) Build and Deploy Logic App. 
 
 env:
-  LA_NAME: 'sample-logic-app'
+  LA_NAME: 'wstransformaction'
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ on:
   # Triggers when an environment file has been changed  
   push:
     paths:
-      - "logic/**"
+      - "./**"
       - ".github/workflows/logicapp_deploy.yml"
 
 jobs:
