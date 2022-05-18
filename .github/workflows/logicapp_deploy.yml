@@ -5,6 +5,7 @@ name: (classic) Build and Deploy Logic App.
 
 env:
   LA_NAME: 'wstransformaction'
+  RG_LA: 'WSilveira-Sandbox'
 
 on:
   workflow_dispatch:
@@ -61,7 +62,7 @@ jobs:
       with:
         inlineScript: |
           $profile = Get-AzWebAppPublishingProfile `
-              -ResourceGroupName ${{ secrets.RG_LA }} `
+              -ResourceGroupName ${{ env.RG_LA }} `
               -Name ${{ env.LA_NAME }}
           $profile = $profile.Replace("`r", "").Replace("`n", "")
           Write-Output "::set-output name=profile::$profile"
